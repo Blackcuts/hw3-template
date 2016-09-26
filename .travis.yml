@@ -1,0 +1,31 @@
+sudo: false
+language: cpp
+compiler:
+  - gcc
+  - clang
+os:
+  - linux
+  - osx
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
+    - g++-4.8
+    - clang
+
+before install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_CXX_COMPILER=$COMPILER .. && make
+  - ./hw3_tests/triangle_basic_tests/runHW3TriangleBasicTests-1
+  - ./hw3_tests/valid_triangle_tests/runHW3ValidTriangleTests-2
+  - ./hw3_tests/triangle_perimeter_tests/runHW3TrianglePerimeterTests-3
+  - ./hw3_tests/triangle_area_tests/runHW3TriangleAreaTests-4
+  - ./hw3_tests/triangle_determining_tests/runHW3TriangleDeterminingTests-5
